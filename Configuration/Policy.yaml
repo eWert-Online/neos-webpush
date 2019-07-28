@@ -1,0 +1,17 @@
+privilegeTargets:
+  Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
+    'Ewert.WebPush:BackendControllerActions':
+      matcher: 'method(Ewert\WebPush\Controller\BackendController->(index)Action())'
+  Neos\Neos\Security\Authorization\Privilege\ModulePrivilege:
+    'Ewert.WebPush:BackendModule':
+      matcher: 'management/webPush'
+
+roles:
+  'Neos.Flow:Everybody':
+    privileges:
+      - privilegeTarget: 'Ewert.WebPush:BackendControllerActions'
+        permission: GRANT
+  'Neos.Neos:Editor':
+    privileges:
+      - privilegeTarget: 'Ewert.WebPush:BackendModule'
+        permission: GRANT

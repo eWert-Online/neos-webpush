@@ -1,0 +1,9 @@
+##
+# Flow subroutes
+- name: 'Flow'
+  uriPattern: 'flow/<FlowSubroutes>'
+  defaults:
+    '@format': 'html'
+  subRoutes:
+    FlowSubroutes:
+      package: Neos.Flow

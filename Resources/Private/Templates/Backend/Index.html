@@ -1,0 +1,54 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<div class="neos-row-fluid">
+    <f:if condition="{messages}">
+        <f:then>
+            <table class="neos-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Message
+                        </th>
+                        <th>Date sent</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <f:for each="{messages}" key="index" as="message">
+                    <tr>
+                        <td>{message.title}</td>
+                        <td>{message.body}</td>
+                        <td>
+                            <f:format.date>
+                                @{message.timestamp}
+                            </f:format.date>
+                        </td>
+                        <td class="neos-action">
+                            <div class="neos-pull-right">
+                                <f:link.action
+                                    action="show"
+                                    arguments="{message: message}"
+                                    class="neos-button neos-button-primary"
+                                    title="View Details"
+                                    additionalAttributes="{data-neos-toggle: 'tooltip'}"
+                                >
+                                    <i class="fas fa-info-circle icon-white"></i>
+                                </f:link.action>
+                            </div>
+                        </td>
+                    </tr>
+                </f:for>
+            </table>
+        </f:then>
+        <f:else>
+            There are no Messages yet. You can create a new one below.
+        </f:else>
+    </f:if>
+</div>
+<div class="neos-footer">
+    <f:link.action action="new" class="neos-button neos-button-primary" title="New Message">
+        New Message
+    </f:link.action>
+</div>

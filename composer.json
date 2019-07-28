@@ -1,0 +1,18 @@
+{
+    "description": "",
+    "type": "neos-package",
+    "name": "ewert/webpush",
+    "require": {
+        "neos/flow": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ewert\\WebPush\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Ewert.WebPush"
+        }
+    }
+}
