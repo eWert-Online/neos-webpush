@@ -1,7 +1,10 @@
 privilegeTargets:
   Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
+    'Ewert.WebPush:SubscriptionControllerCreate':
+      matcher: 'method(Ewert\WebPush\Controller\SubscriptionController->createAction())'
     'Ewert.WebPush:BackendControllerActions':
       matcher: 'method(Ewert\WebPush\Controller\BackendController->(index)Action())'
+
   Neos\Neos\Security\Authorization\Privilege\ModulePrivilege:
     'Ewert.WebPush:BackendModule':
       matcher: 'management/webPush'
@@ -9,9 +12,11 @@ privilegeTargets:
 roles:
   'Neos.Flow:Everybody':
     privileges:
-      - privilegeTarget: 'Ewert.WebPush:BackendControllerActions'
+      - privilegeTarget: 'Ewert.WebPush:SubscriptionControllerCreate'
         permission: GRANT
   'Neos.Neos:Editor':
     privileges:
+      - privilegeTarget: 'Ewert.WebPush:BackendControllerActions'
+        permission: GRANT
       - privilegeTarget: 'Ewert.WebPush:BackendModule'
         permission: GRANT

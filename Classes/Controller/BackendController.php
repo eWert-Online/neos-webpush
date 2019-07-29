@@ -7,8 +7,13 @@ namespace Ewert\WebPush\Controller;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
+
 use Ewert\WebPush\Domain\Model\Message;
 use Ewert\WebPush\Domain\Repository\MessageRepository;
+use Ewert\WebPush\Domain\Repository\SubscriptionRepository;
+
+use Minishlink\WebPush\WebPush;
+use Minishlink\WebPush\Subscription;
 
 
 class BackendController extends ActionController
@@ -18,6 +23,12 @@ class BackendController extends ActionController
      * @var MessageRepository
      */
     protected $messageRepository;
+    
+    /**
+     * @Flow\Inject
+     * @var SubscriptionRepository
+     */
+    protected $subscriptionRepository;
 
     /**
      * Shows a list of all messages
@@ -60,6 +71,7 @@ class BackendController extends ActionController
      * @param string $direction
      * @param string $lang
      * @param string $body
+     * @param string $url
      * @param string $tag
      * @param string $image
      * @param string $icon
@@ -68,7 +80,6 @@ class BackendController extends ActionController
      * @param boolean $renotify
      * @param boolean $silent
      * @param boolean $requireInteraction
-     * @param string $data
      * @param array $actions
      * @return void
      */
@@ -77,6 +88,7 @@ class BackendController extends ActionController
         $direction = 'auto',
         $lang = null,
         $body = null,
+        $url = null,
         $tag = null,
         $image = null,
         $icon = null,
@@ -85,10 +97,13 @@ class BackendController extends ActionController
         $renotify = false,
         $silent = false,
         $requireInteraction = false,
-        $data = null,
         array $actions = []
     )
     {
+        $data = json_encode([
+            "url" => $url
+        ]);
+
         $message = new Message($title, $body);
         $message->setTitle($title);
         $message->setDirection($direction);
@@ -105,10 +120,70 @@ class BackendController extends ActionController
         $message->setSilent($silent);
         $message->setRequireInteraction($requireInteraction);
         $message->setData($data);
-        $message->setData($data);
         $message->setActions($actions);
 
         $this->messageRepository->add($message);
+        $this->redirect('index');
+    }
+
+    /**
+     * Deletes the specified message
+     *
+     * @param Message $message
+     * @return void
+     */
+    public function deleteAction(Message $message): void
+    {
+        $this->messageRepository->remove($message);
+        $this->addFlashMessage("The Message has been successfully deleted!");
+        $this->redirect('index');
+    }
+
+    /**
+     * Sends the specified message
+     *
+     * @param Message $message
+     * @return void
+     */
+    public function sendAction(Message $message): void
+    {
+        $allSubscriptions = $this->subscriptionRepository->findAll();
+
+        foreach($allSubscriptions as $subscription) {
+            $auth = array(
+                'VAPID' => array(
+                    'subject' => 'https://github.com/Minishlink/web-push-php-example/',
+                    'publicKey' => 'BMBlr6YznhYMX3NgcWIDRxZXs0sh7tCv7_YCsWcww0ZCv9WGg-tRCXfMEHTiBPCksSqeve1twlbmVAZFv7GSuj0',
+                    'privateKey' => 'vplfkITvu0cwHqzK9Kj-DYStbCH_9AhGx9LqMyaeI6w',
+                ),
+            );
+
+            $webPush = new WebPush($auth);
+
+            $res = $webPush->sendNotification(
+                Subscription::create([
+                    'endpoint' => $subscription->getEndpoint(),
+                    'publicKey' => $subscription->getP256dh(),
+                    'authToken' => $subscription->getAuth(),
+                ]),
+                "{
+                    msg: \"Hello World!\"
+                }",
+                true // flush
+            );
+
+            // handle eventual errors here, and remove the subscription from your server if it is expired
+            foreach ($webPush->flush() as $report) {
+                $endpoint = $report->getRequest()->getUri()->__toString();
+                if ($report->isSuccess()) {
+                    echo "[v] Message sent successfully for subscription {$endpoint}.";
+                } else {
+                    echo "[x] Message failed to sent for subscription {$endpoint}: {$report->getReason()}";
+                }
+            }
+        }
+
+        $this->addFlashMessage('The Message has been sent successfully to '. count($allSubscriptions) .' Subscriber(s).');
         $this->redirect('index');
     }
 }

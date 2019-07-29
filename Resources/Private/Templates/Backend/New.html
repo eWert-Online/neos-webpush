@@ -1,174 +1,161 @@
 {namespace neos=Neos\Neos\ViewHelpers}
 
 <f:form action="create" objectName="message">
-    <div class="neos-row-fluid neos-module-container">
-        <fieldset class="neos-span6">
-            <legend>Message</legend>
-            <div
-                class="neos-control-group{f:validation.ifHasErrors(for: 'title', then: ' neos-error')}"
-            >
-                <label class="neos-control-label" for="title">Title</label>
-                <div class="neos-controls">
-                    <f:form.textfield name="title" id="title" class="neos-span12" />
-                    <f:render
-                        partial="Shared/FieldValidationResults"
-                        arguments="{fieldname: 'title'}"
-                    />
-                </div>
-            </div>
-            <br />
-            <div
-                class="neos-control-group{f:validation.ifHasErrors(for: 'body', then: ' neos-error')}"
-            >
-                <label class="neos-control-label" for="body">Message</label>
-                <div class="neos-controls">
-                    <f:form.textarea rows="5" name="body" id="body" class="neos-span12" />
-                    <f:render
-                        partial="Shared/FieldValidationResults"
-                        arguments="{fieldname: 'body'}"
-                    />
-                </div>
-            </div>
-        </fieldset>
-        <fieldset class="neos-span6">
-        </fieldset>
-    </div>
+  <div class="neos-row-fluid neos-module-container">
+    <fieldset class="neos-span6">
+      <legend>Message</legend>
+      <div class="neos-control-group{f:validation.ifHasErrors(for: 'title', then: ' neos-error')}">
+        <label class="neos-control-label" for="title">Title *</label>
+        <div class="neos-controls">
+          <f:form.textfield name="title" id="title" class="neos-span12" />
+          <f:render partial="Shared/FieldValidationResults" arguments="{fieldname: 'title'}" />
+        </div>
+      </div>
+      <br />
+      <div class="neos-control-group{f:validation.ifHasErrors(for: 'body', then: ' neos-error')}">
+        <label class="neos-control-label" for="body">Message</label>
+        <div class="neos-controls">
+          <f:form.textarea rows="5" name="body" id="body" class="neos-span12" />
+          <f:render partial="Shared/FieldValidationResults" arguments="{fieldname: 'body'}" />
+        </div>
+      </div>
+      <br />
+      <div class="neos-control-group{f:validation.ifHasErrors(for: 'url', then: ' neos-error')}">
+        <label class="neos-control-label" for="url">URL</label>
+        <div class="neos-controls">
+          <f:form.textfield name="url" id="url" class="neos-span12" />
+          <f:render partial="Shared/FieldValidationResults" arguments="{fieldname: 'url'}" />
+        </div>
+      </div>
+    </fieldset>
+    <fieldset class="neos-span6"> </fieldset>
+  </div>
 
-    <hr />
-    <legend>Options</legend>
-    <div class="neos-row-fluid neos-module-container">
-        <fieldset class="neos-span4">
-            <div class="neos-control-group">
-                <label class="neos-control-label">
-                    Require Interaction
-                </label>
-                <div class="neos-help-block">
-                    <p>
-                        On desktop, a notification is only displayed for a short period of time. On
-                        Android, notifications are shown until the user interacts with it.
-                    </p>
-                    <p>
-                        To get the same behaviour on desktop and mobile you can set this option to
-                        "yes", which means the user must click or dismiss the notification.
-                    </p>
-                </div>
-                <div class="neos-controls">
-                    <label for="requireInteraction.true" class="neos-radio">
-                        <f:form.radio
-                            name="requireInteraction"
-                            id="requireInteraction.true"
-                            value="1"
-                        /><span></span>
-                        <span>Yes</span>
-                    </label>
-                </div>
-                <div class="neos-controls">
-                    <label for="requireInteraction.false" class="neos-radio">
-                        <f:form.radio
-                            name="requireInteraction"
-                            id="requireInteraction.false"
-                            value="0"
-                            checked="checked"
-                        /><span></span>
-                        <span>No</span>
-                    </label>
-                </div>
-            </div>
-        </fieldset>
-        <fieldset class="neos-span4">
-            <div class="neos-control-group">
-                <label class="neos-control-label">
-                    Silent
-                </label>
-                <div class="neos-help-block">
-                    <p>
-                        When a new notification arrives, by default, it plays a sound, vibrates and
-                        wakes up the screen. <br />
-                        Setting the message to silent means that the notification is displayed, but
-                        there is none of the default behaviors like sound, vibration and screen
-                        wake.
-                    </p>
-                </div>
-                <div class="neos-controls">
-                    <label for="silent.true" class="neos-radio">
-                        <f:form.radio name="silent" id="silent.true" value="1" /><span></span>
-                        <span>Yes</span>
-                    </label>
-                </div>
-                <div class="neos-controls">
-                    <label for="silent.false" class="neos-radio">
-                        <f:form.radio
-                            name="silent"
-                            id="silent.false"
-                            value="0"
-                            checked="checked"
-                        /><span></span>
-                        <span>No</span>
-                    </label>
-                </div>
-            </div>
-        </fieldset>
-        <fieldset class="neos-span4">
-            <div
-                class="neos-control-group{f:validation.ifHasErrors(for: 'tag', then: ' neos-error')}"
-            >
-                <label class="neos-control-label" for="tag">Tag</label>
-                <div class="neos-help-block">
-                    <p>
-                        Defining a tag for a notification means that when a new Notification is
-                        shown with the same tag, any old notifications with that tag are removed
-                        before the new notification is shown.
-                    </p>
-                </div>
-                <div class="neos-controls">
-                    <f:form.textfield name="tag" id="tag" class="neos-span12" />
-                    <f:render
-                        partial="Shared/FieldValidationResults"
-                        arguments="{fieldname: 'tag'}"
-                    />
-                </div>
-                <br />
-                <div class="neos-control-group">
-                    <label class="neos-control-label">
-                        Renotify
-                    </label>
-                    <div class="neos-help-block">
-                        <p>
-                            When using the Tag option, the default behavior of a new notification is
-                            that there is no sound, vibration and the screen is kept asleep. <br />
-                            With "Renotify: Yes", a new notification will play a sound, vibrate and
-                            wake up the users device.
-                        </p>
-                    </div>
-                    <div class="neos-controls">
-                        <label for="renotify.true" class="neos-radio">
-                            <f:form.radio
-                                name="renotify"
-                                id="renotify.true"
-                                value="1"
-                            /><span></span>
-                            <span>Yes</span>
-                        </label>
-                    </div>
-                    <div class="neos-controls">
-                        <label for="renotify.false" class="neos-radio">
-                            <f:form.radio
-                                name="renotify"
-                                id="renotify.false"
-                                value="0"
-                                checked="checked"
-                            /><span></span>
-                            <span>No</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-</f:form>
-<div class="neos-footer">
+  <hr />
+  <legend>Options</legend>
+  <div class="neos-row-fluid neos-module-container">
+    <fieldset class="neos-span4">
+      <div class="neos-control-group">
+        <label class="neos-control-label">
+          Require Interaction
+        </label>
+        <div class="neos-help-block">
+          <p>
+            On desktop, a notification is only displayed for a short period of time. On Android,
+            notifications are shown until the user interacts with it.
+          </p>
+          <p>
+            To get the same behaviour on desktop and mobile you can set this option to "yes", which
+            means the user must click or dismiss the notification.
+          </p>
+        </div>
+        <div class="neos-controls">
+          <label for="requireInteraction.true" class="neos-radio">
+            <f:form.radio
+              name="requireInteraction"
+              id="requireInteraction.true"
+              value="1"
+            /><span></span>
+            <span>Yes</span>
+          </label>
+        </div>
+        <div class="neos-controls">
+          <label for="requireInteraction.false" class="neos-radio">
+            <f:form.radio
+              name="requireInteraction"
+              id="requireInteraction.false"
+              value="0"
+              checked="checked"
+            /><span></span>
+            <span>No</span>
+          </label>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset class="neos-span4">
+      <div class="neos-control-group">
+        <label class="neos-control-label">
+          Silent
+        </label>
+        <div class="neos-help-block">
+          <p>
+            When a new notification arrives, by default, it plays a sound, vibrates and wakes up the
+            screen. <br />
+            Setting the message to silent means that the notification is displayed, but there is
+            none of the default behaviors like sound, vibration and screen wake.
+          </p>
+        </div>
+        <div class="neos-controls">
+          <label for="silent.true" class="neos-radio">
+            <f:form.radio name="silent" id="silent.true" value="1" /><span></span>
+            <span>Yes</span>
+          </label>
+        </div>
+        <div class="neos-controls">
+          <label for="silent.false" class="neos-radio">
+            <f:form.radio
+              name="silent"
+              id="silent.false"
+              value="0"
+              checked="checked"
+            /><span></span>
+            <span>No</span>
+          </label>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset class="neos-span4">
+      <div class="neos-control-group{f:validation.ifHasErrors(for: 'tag', then: ' neos-error')}">
+        <label class="neos-control-label" for="tag">Tag</label>
+        <div class="neos-help-block">
+          <p>
+            Defining a tag for a notification means that when a new Notification is shown with the
+            same tag, any old notifications with that tag are removed before the new notification is
+            shown.
+          </p>
+        </div>
+        <div class="neos-controls">
+          <f:form.textfield name="tag" id="tag" class="neos-span12" />
+          <f:render partial="Shared/FieldValidationResults" arguments="{fieldname: 'tag'}" />
+        </div>
+        <br />
+        <div class="neos-control-group">
+          <label class="neos-control-label">
+            Renotify
+          </label>
+          <div class="neos-help-block">
+            <p>
+              When using the Tag option, the default behavior of a new notification is that there is
+              no sound, vibration and the screen is kept asleep. <br />
+              With "Renotify: Yes", a new notification will play a sound, vibrate and wake up the
+              users device.
+            </p>
+          </div>
+          <div class="neos-controls">
+            <label for="renotify.true" class="neos-radio">
+              <f:form.radio name="renotify" id="renotify.true" value="1" /><span></span>
+              <span>Yes</span>
+            </label>
+          </div>
+          <div class="neos-controls">
+            <label for="renotify.false" class="neos-radio">
+              <f:form.radio
+                name="renotify"
+                id="renotify.false"
+                value="0"
+                checked="checked"
+              /><span></span>
+              <span>No</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div class="neos-footer">
     <f:link.action action="index" class="neos-button">
-        Cancel
+      Cancel
     </f:link.action>
-    <f:form.submit value="Create Message" class="neos-button neos-button-primary" />
-</div>
+    <f:form.submit value="Create & Send Message" class="neos-button neos-button-primary" />
+  </div>
+</f:form>

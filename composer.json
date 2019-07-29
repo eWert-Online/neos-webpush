@@ -1,18 +1,19 @@
 {
-    "description": "",
-    "type": "neos-package",
-    "name": "ewert/webpush",
-    "require": {
-        "neos/flow": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "Ewert\\WebPush\\": "Classes/"
-        }
-    },
-    "extra": {
-        "neos": {
-            "package-key": "Ewert.WebPush"
-        }
+  "description": "",
+  "type": "neos-package",
+  "name": "ewert/webpush",
+  "require": {
+    "neos/flow": "*",
+    "minishlink/web-push": "^5.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ewert\\WebPush\\": "Classes/"
     }
+  },
+  "extra": {
+    "neos": {
+      "package-key": "Ewert.WebPush"
+    }
+  }
 }

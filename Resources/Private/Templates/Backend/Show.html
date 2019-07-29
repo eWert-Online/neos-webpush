@@ -1,0 +1,95 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<f:if condition="{message}">
+  <div class="neos-row-fluid neos-module-container">
+    <div class="neos-span6">
+      <legend>Message</legend>
+      <table class="neos-info-table">
+        <tbody>
+          <tr>
+            <th>Title</th>
+            <td>{message.title}</td>
+          </tr>
+          <tr>
+            <th>Message</th>
+            <td>{message.body}</td>
+          </tr>
+          <tr>
+            <th>Date sent</th>
+            <td>
+              <f:format.date>
+                @{message.timestamp}
+              </f:format.date>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="neos-span6">
+      <legend>Options</legend>
+      <table class="neos-info-table">
+        <tbody>
+          <tr>
+            <th>Require Interaction</th>
+            <td>{message.requireInteraction ? "Yes" : "No"}</td>
+          </tr>
+          <tr>
+            <th>Silent</th>
+            <td>{message.silent ? "Yes" : "No"}</td>
+          </tr>
+          <tr>
+            <th>Tag</th>
+            <td>
+              <f:if condition="{message.tag} != ''">
+                <f:then>
+                  <span class="neos-label">
+                    {message.tag}
+                  </span>
+                  (<b>Renotify:</b> {message.renotify ? "Yes" : "No"})
+                </f:then>
+                <f:else>
+                  None
+                </f:else>
+              </f:if>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="neos-footer">
+    <f:link.action action="index" class="neos-button">
+      Back
+    </f:link.action>
+
+    <button class="neos-button neos-button-danger" data-toggle="modal" href="#message-delete">
+      <i class="fas fa-trash-alt icon-white"></i> Delete Message
+    </button>
+    <div class="neos-hide" id="message-delete">
+      <div class="neos-modal-centered">
+        <div class="neos-modal-content">
+          <div class="neos-modal-header">
+            <button type="button" class="neos-close neos-button" data-dismiss="modal"></button>
+            <div class="neos-header"
+              >Are you sure you want to delete the message "{message.title}"</div
+            >
+            <div>
+              <div class="neos-subheader">
+                <p>Bla</p>
+              </div>
+            </div>
+          </div>
+          <div class="neos-modal-footer">
+            <a href="#" class="neos-button" data-dismiss="modal">Cancel</a>
+            <f:form action="delete" arguments="{message: message}" class="neos-inline">
+              <button type="submit" class="neos-button neos-button-danger" title="Delete Message">
+                Yes, delete Message
+              </button>
+            </f:form>
+          </div>
+        </div>
+      </div>
+      <div class="neos-modal-backdrop neos-in"></div>
+    </div>
+  </div>
+</f:if>

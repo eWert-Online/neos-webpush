@@ -1,54 +1,124 @@
 {namespace neos=Neos\Neos\ViewHelpers}
+<f:flashMessages as="flashMessages">
+  <f:if condition="{flashMessages -> f:count()} > 0">
+    <ul id="neos-notifications-inline">
+      <f:for each="{flashMessages}" as="flashMessage">
+        <li data-type="{flashMessage.severity -> f:format.case(mode: 'lower')}"
+          >{neos:backend.translate(id: 'flashMessage.{flashMessage.code}', arguments:
+          flashMessage.arguments, value: flashMessage)}</li
+        >
+      </f:for>
+    </ul>
+  </f:if>
+</f:flashMessages>
 
 <div class="neos-row-fluid">
-    <f:if condition="{messages}">
-        <f:then>
-            <table class="neos-table">
-                <thead>
-                    <tr>
-                        <th>
-                            Title
-                        </th>
-                        <th>
-                            Message
-                        </th>
-                        <th>Date sent</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <f:for each="{messages}" key="index" as="message">
-                    <tr>
-                        <td>{message.title}</td>
-                        <td>{message.body}</td>
-                        <td>
-                            <f:format.date>
-                                @{message.timestamp}
-                            </f:format.date>
-                        </td>
-                        <td class="neos-action">
-                            <div class="neos-pull-right">
-                                <f:link.action
-                                    action="show"
-                                    arguments="{message: message}"
-                                    class="neos-button neos-button-primary"
-                                    title="View Details"
-                                    additionalAttributes="{data-neos-toggle: 'tooltip'}"
-                                >
-                                    <i class="fas fa-info-circle icon-white"></i>
-                                </f:link.action>
-                            </div>
-                        </td>
-                    </tr>
-                </f:for>
-            </table>
-        </f:then>
-        <f:else>
-            There are no Messages yet. You can create a new one below.
-        </f:else>
-    </f:if>
+  <f:if condition="{messages}">
+    <f:then>
+      <table class="neos-table">
+        <thead>
+          <tr>
+            <th>
+              Title
+            </th>
+            <th>
+              Message
+            </th>
+            <th>
+              Tag
+            </th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <f:for each="{messages}" key="index" as="message" iteration="messagesIterator">
+          <tr>
+            <td>{message.title}</td>
+            <td>{message.body}</td>
+            <td>
+              <f:if condition="{message.tag} != ''">
+                <span class="neos-label">
+                  {message.tag}
+                </span>
+              </f:if>
+            </td>
+            <td class="neos-action">
+              <div class="neos-pull-right">
+                <f:link.action
+                  action="send"
+                  arguments="{message: message}"
+                  class="neos-button neos-button-primary"
+                  title="Send Message"
+                  additionalAttributes="{data-neos-toggle: 'tooltip'}"
+                >
+                  <i class="fas fa-share icon-white"></i>
+                </f:link.action>
+
+                <f:link.action
+                  action="show"
+                  arguments="{message: message}"
+                  class="neos-button neos-button-primary"
+                  title="View Details"
+                  additionalAttributes="{data-neos-toggle: 'tooltip'}"
+                >
+                  <i class="fas fa-info-circle icon-white"></i>
+                </f:link.action>
+
+                <button
+                  class="neos-button neos-button-danger"
+                  title="Delete Message"
+                  data-toggle="modal"
+                  href="#message-{messagesIterator.index}"
+                  data-neos-toggle="tooltip"
+                >
+                  <i class="fas fa-trash-alt icon-white"></i>
+                </button>
+                <div class="neos-hide" id="message-{messagesIterator.index}">
+                  <div class="neos-modal-centered">
+                    <div class="neos-modal-content">
+                      <div class="neos-modal-header">
+                        <button
+                          type="button"
+                          class="neos-close neos-button"
+                          data-dismiss="modal"
+                        ></button>
+                        <div class="neos-header"
+                          >Are you sure you want to delete the message "{message.title}"</div
+                        >
+                        <div>
+                          <div class="neos-subheader">
+                            <p>Bla</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="neos-modal-footer">
+                        <a href="#" class="neos-button" data-dismiss="modal">Cancel</a>
+                        <f:form action="delete" arguments="{message: message}" class="neos-inline">
+                          <button
+                            type="submit"
+                            class="neos-button neos-button-danger"
+                            title="Delete Message"
+                          >
+                            Yes, delete Message
+                          </button>
+                        </f:form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="neos-modal-backdrop neos-in"></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </f:for>
+      </table>
+    </f:then>
+    <f:else>
+      There are no Messages yet. You can create a new one below.
+    </f:else>
+  </f:if>
 </div>
 <div class="neos-footer">
-    <f:link.action action="new" class="neos-button neos-button-primary" title="New Message">
-        New Message
-    </f:link.action>
+  <f:link.action action="new" class="neos-button neos-button-primary" title="New Message">
+    New Message
+  </f:link.action>
 </div>

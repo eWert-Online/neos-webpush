@@ -1,9 +1,8 @@
 ##
 # Flow subroutes
-- name: 'Flow'
-  uriPattern: 'flow/<FlowSubroutes>'
+- name: 'WebPush Subscribe New'
+  uriPattern: 'webpush/subscribtion/new'
   defaults:
-    '@format': 'html'
-  subRoutes:
-    FlowSubroutes:
-      package: Neos.Flow
+    '@package': 'Ewert.WebPush'
+    '@controller': 'Subscription'
+    '@action': 'create'

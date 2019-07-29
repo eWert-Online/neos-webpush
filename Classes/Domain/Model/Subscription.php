@@ -68,7 +68,7 @@ class Subscription
      * @param integer $expirationTime
      * @return void
      */
-    public function setExpirationTime($expirationTime)
+    public function setExpirationTime($expirationTime = null)
     {
         $this->expirationTime = $expirationTime;
     }

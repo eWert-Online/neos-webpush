@@ -1,5 +1,12 @@
 Neos:
+  Flow:
+    mvc:
+      routes:
+        'Ewert.WebPush': true
   Neos:
+    fusion:
+      autoInclude:
+        'Ewert.WebPush': true
     modules:
       'management':
         submodules:
