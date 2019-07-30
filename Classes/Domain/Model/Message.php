@@ -95,9 +95,9 @@ class Message
 
     /**
      * @var string
-     * @ORM\Column(type="text", nullable=TRUE)
+     * @ORM\Column(nullable=TRUE)
      */
-    protected $data;
+    protected $url;
 
     /**
      * @var array
@@ -332,18 +332,18 @@ class Message
     /**
      * @return string
      */
-    public function getData()
+    public function getUrl()
     {
-        return $this->data;
+        return $this->url;
     }
 
     /**
-     * @param string $data
+     * @param string $url
      * @return void
      */
-    public function setData($data)
+    public function setUrl($url)
     {
-        $this->data = $data;
+        $this->url = $url;
     }
     /**
      * @return array

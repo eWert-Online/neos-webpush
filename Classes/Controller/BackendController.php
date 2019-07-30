@@ -23,7 +23,7 @@ class BackendController extends ActionController
      * @var MessageRepository
      */
     protected $messageRepository;
-    
+
     /**
      * @Flow\Inject
      * @var SubscriptionRepository
@@ -100,10 +100,6 @@ class BackendController extends ActionController
         array $actions = []
     )
     {
-        $data = json_encode([
-            "url" => $url
-        ]);
-
         $message = new Message($title, $body);
         $message->setTitle($title);
         $message->setDirection($direction);
@@ -119,7 +115,7 @@ class BackendController extends ActionController
         $message->setSilent($silent);
         $message->setSilent($silent);
         $message->setRequireInteraction($requireInteraction);
-        $message->setData($data);
+        $message->setUrl($url);
         $message->setActions($actions);
 
         $this->messageRepository->add($message);
@@ -166,9 +162,24 @@ class BackendController extends ActionController
                     'publicKey' => $subscription->getP256dh(),
                     'authToken' => $subscription->getAuth(),
                 ]),
-                "{
-                    \"title\": \"". $message->getTitle() ."\"
-                }",
+                json_encode(array(
+                    "title" => $message->getTitle(),
+                    "body" => $message->getBody(),
+                    "icon" => $message->getIcon(),
+                    "image" => $message->getImage(),
+                    "badge" => $message->getBadge(),
+                    "vibrate" => $message->getVibrate(),
+                    "dir" => $message->getDirection(),
+                    "lang" => $message->getLang(),
+
+                    "tag" => $message->getTag(),
+                    "requireInteraction" => $message->getRequireInteraction(),
+                    "renotify" => $message->getRenotify(),
+                    "silent" => $message->getSilent(),
+
+                    "actions" => $message->getActions(),
+                    "url" => $message->getUrl(),
+                )),
                 true // flush
             );
 

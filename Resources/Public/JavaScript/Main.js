@@ -1,11 +1,26 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // Let's check if the browser supports notifications
-  if (!('Notification' in window) || !navigator.serviceWorker) {
-    console.warn('This browser does not support desktop notifications :(');
-    return;
-  }
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    // Let's check if the browser supports notifications
+    if (!('Notification' in window) || !navigator.serviceWorker) {
+      console.warn('This browser does not support desktop notifications :(');
+      return;
+    }
 
-  if (Notification.permission === 'granted') {
+    if (Notification.permission === 'granted') {
+      registerServiceWorker();
+    } else if (Notification.permission === 'blocked') {
+      console.warn('Permission was denied.');
+      return;
+    } else {
+      Notification.requestPermission(function(status) {
+        if (status === 'granted') {
+          registerServiceWorker();
+        }
+      });
+    }
+  });
+
+  function registerServiceWorker() {
     // Register and get the notification details and send them to the server.
     navigator.serviceWorker
       .register(window.EwertWebPush.swUrl)
@@ -13,8 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(
-            'BMBlr6YznhYMX3NgcWIDRxZXs0sh7tCv7_YCsWcww0ZCv9WGg-tRCXfMEHTiBPCksSqeve1twlbmVAZFv7GSuj0'
-          )
+            'BMBlr6YznhYMX3NgcWIDRxZXs0sh7tCv7_YCsWcww0ZCv9WGg-tRCXfMEHTiBPCksSqeve1twlbmVAZFv7GSuj0',
+          ),
         });
       })
       .then(function(subscription) {
@@ -22,35 +37,28 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/webpush/subscribtion/new', {
           method: 'POST',
           headers: new Headers({
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           }),
           body: JSON.stringify({
             endpoint: sub.endpoint,
             expirationTime: sub.expirationTime,
             p256dh: sub.keys.p256dh,
-            auth: sub.keys.auth
-          })
+            auth: sub.keys.auth,
+          }),
         });
       });
-  } else if (Notification.permission === 'blocked') {
-    console.warn('Permission was denied.');
-    return;
-  } else {
-    Notification.requestPermission(function(status) {
-      console.info('Notification Permission status:', status);
-    });
   }
-});
 
-function urlBase64ToUint8Array(base64String) {
-  var padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  var base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+  function urlBase64ToUint8Array(base64String) {
+    var padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    var base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
 
-  var rawData = window.atob(base64);
-  var outputArray = new Uint8Array(rawData.length);
+    var rawData = window.atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
 
-  for (var i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
+    for (var i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
   }
-  return outputArray;
-}
+})();
