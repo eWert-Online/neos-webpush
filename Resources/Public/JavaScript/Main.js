@@ -30,9 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
             p256dh: sub.keys.p256dh,
             auth: sub.keys.auth
           })
-        }).then(function(data) {
-          console.log('returned from server:');
-          console.log(data);
         });
       });
   } else if (Notification.permission === 'blocked') {

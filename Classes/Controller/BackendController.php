@@ -167,7 +167,7 @@ class BackendController extends ActionController
                     'authToken' => $subscription->getAuth(),
                 ]),
                 "{
-                    msg: \"Hello World!\"
+                    \"title\": \"". $message->getTitle() ."\"
                 }",
                 true // flush
             );
