@@ -1,7 +1,7 @@
 {
   "description": "",
   "type": "neos-package",
-  "name": "ewert/webpush",
+  "name": "ewert/neos-webpush",
   "require": {
     "neos/flow": "*",
     "minishlink/web-push": "^5.2"
