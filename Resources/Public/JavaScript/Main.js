@@ -28,8 +28,8 @@
         return registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(
-            'BMBlr6YznhYMX3NgcWIDRxZXs0sh7tCv7_YCsWcww0ZCv9WGg-tRCXfMEHTiBPCksSqeve1twlbmVAZFv7GSuj0',
-          ),
+            'BMBlr6YznhYMX3NgcWIDRxZXs0sh7tCv7_YCsWcww0ZCv9WGg-tRCXfMEHTiBPCksSqeve1twlbmVAZFv7GSuj0'
+          )
         });
       })
       .then(function(subscription) {
@@ -37,14 +37,14 @@
         fetch('/webpush/subscribtion/new', {
           method: 'POST',
           headers: new Headers({
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           }),
           body: JSON.stringify({
             endpoint: sub.endpoint,
             expirationTime: sub.expirationTime,
             p256dh: sub.keys.p256dh,
-            auth: sub.keys.auth,
-          }),
+            auth: sub.keys.auth
+          })
         });
       });
   }

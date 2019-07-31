@@ -18,10 +18,10 @@ self.addEventListener('push', function(event) {
       silent: payload.silent,
 
       data: {
-        url: payload.url,
+        url: payload.url
       },
-      actions: payload.actions,
-    }),
+      actions: payload.actions
+    })
   );
 });
 
