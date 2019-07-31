@@ -16,7 +16,7 @@ use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
 
 
-class BackendController extends ActionController
+class MessageController extends ActionController
 {
     /**
      * @Flow\Inject

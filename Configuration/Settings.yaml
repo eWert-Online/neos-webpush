@@ -12,6 +12,6 @@ Neos:
         submodules:
           'webPush':
             label: 'Push Messages'
-            controller: 'Ewert\WebPush\Controller\BackendController'
+            controller: 'Ewert\WebPush\Controller\MessageController'
             description: 'Send Push-Messages'
             icon: 'icon-comment-dots'
