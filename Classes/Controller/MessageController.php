@@ -14,6 +14,7 @@ use Ewert\WebPush\Domain\Repository\SubscriptionRepository;
 
 use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
+use Minishlink\WebPush\VAPID;
 
 
 class MessageController extends ActionController
@@ -31,15 +32,33 @@ class MessageController extends ActionController
     protected $subscriptionRepository;
 
     /**
+     * @Flow\InjectConfiguration(path="vapid.publicKey")
+     * @var string
+     */
+    protected $vapidPublicKey;
+
+    /**
+     * @Flow\InjectConfiguration(path="vapid.privateKey")
+     * @var string
+     */
+    protected $vapidPrivateKey;
+
+    /**
      * Shows a list of all messages
      * @return void
      */
     public function indexAction()
     {
-        $messages = $this->messageRepository->findAll();
-        $this->view->assignMultiple([
-            'messages' => $messages
-        ]);
+        if($this->vapidPrivateKey == "" || $this->vapidPublicKey == "") {
+            $vapid = VAPID::createVapidKeys();
+            $this->view->assign('generateVapid', true);
+            $this->view->assign('publicKey', $vapid["publicKey"]);
+            $this->view->assign('privateKey', $vapid["privateKey"]);
+        } else {
+            $messages = $this->messageRepository->findAll();
+            $this->view->assign('messages', $messages);
+        }
+
     }
 
     /**

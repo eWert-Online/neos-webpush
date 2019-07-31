@@ -15,3 +15,9 @@ Neos:
             controller: 'Ewert\WebPush\Controller\MessageController'
             description: 'Send Push-Messages'
             icon: 'icon-comment-dots'
+
+Ewert:
+  WebPush:
+    vapid:
+      publicKey: ''
+      privateKey: ''
