@@ -1,4 +1,5 @@
 <?php
+
 namespace Ewert\WebPush\Domain\Model;
 
 /*
@@ -117,7 +118,6 @@ class Message
     {
         $this->title = $title;
         $this->body = $body;
-        $this->timestamp = time();
     }
 
 

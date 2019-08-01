@@ -1,4 +1,5 @@
 <?php
+
 namespace Ewert\WebPush\Controller;
 
 /*
@@ -49,7 +50,7 @@ class MessageController extends ActionController
      */
     public function indexAction()
     {
-        if($this->vapidPrivateKey == "" || $this->vapidPublicKey == "") {
+        if ($this->vapidPrivateKey == "" || $this->vapidPublicKey == "") {
             $vapid = VAPID::createVapidKeys();
             $this->view->assign('generateVapid', true);
             $this->view->assign('publicKey', $vapid["publicKey"]);
@@ -58,7 +59,6 @@ class MessageController extends ActionController
             $messages = $this->messageRepository->findAll();
             $this->view->assign('messages', $messages);
         }
-
     }
 
     /**
@@ -75,11 +75,23 @@ class MessageController extends ActionController
     }
 
     /**
+     * Edit details for the specified message
+     *
+     * @param Message $message
+     * @return void
+     */
+    public function editAction(Message $message): void
+    {
+        $this->view->assignMultiple([
+            'message' => $message
+        ]);
+    }
+
+    /**
      * @return void
      */
     public function newAction()
-    {
-    }
+    { }
 
 
     /**
@@ -117,8 +129,7 @@ class MessageController extends ActionController
         $silent = false,
         $requireInteraction = false,
         array $actions = []
-    )
-    {
+    ) {
         $message = new Message($title, $body);
         $message->setTitle($title);
         $message->setDirection($direction);
@@ -138,6 +149,7 @@ class MessageController extends ActionController
         $message->setActions($actions);
 
         $this->messageRepository->add($message);
+        $this->addFlashMessage("The Message has been successfully added!");
         $this->redirect('index');
     }
 
@@ -155,6 +167,19 @@ class MessageController extends ActionController
     }
 
     /**
+     * Updates a message based on the given information
+     *
+     * @param Message $message
+     * @return void
+     */
+    public function updateAction(Message $message): void
+    {
+        $this->messageRepository->update($message);
+        $this->addFlashMessage("The Message has been successfully edited!");
+        $this->redirect('index');
+    }
+
+    /**
      * Sends the specified message
      *
      * @param Message $message
@@ -163,8 +188,10 @@ class MessageController extends ActionController
     public function sendAction(Message $message): void
     {
         $allSubscriptions = $this->subscriptionRepository->findAll();
+        $sentCount = 0;
+        $failCount = 0;
 
-        foreach($allSubscriptions as $subscription) {
+        foreach ($allSubscriptions as $subscription) {
             $auth = array(
                 'VAPID' => array(
                     'subject' => '',
@@ -175,7 +202,7 @@ class MessageController extends ActionController
 
             $webPush = new WebPush($auth);
 
-            $res = $webPush->sendNotification(
+            $webPush->sendNotification(
                 Subscription::create([
                     'endpoint' => $subscription->getEndpoint(),
                     'publicKey' => $subscription->getP256dh(),
@@ -198,22 +225,27 @@ class MessageController extends ActionController
 
                     "actions" => $message->getActions(),
                     "url" => $message->getUrl(),
-                )),
-                true // flush
+                ))
             );
 
-            // handle eventual errors here, and remove the subscription from your server if it is expired
             foreach ($webPush->flush() as $report) {
-                $endpoint = $report->getRequest()->getUri()->__toString();
+                // $endpoint = $report->getRequest()->getUri()->__toString();
                 if ($report->isSuccess()) {
-                    echo "[v] Message sent successfully for subscription {$endpoint}.";
+                    $sentCount++;
                 } else {
-                    echo "[x] Message failed to sent for subscription {$endpoint}: {$report->getReason()}";
+                    $failCount++;
                 }
             }
         }
 
-        $this->addFlashMessage('The Message has been sent successfully to '. count($allSubscriptions) .' Subscriber(s).');
+        if ($sentCount > 0) {
+            $this->addFlashMessage('The Message has been sent successfully to ' . $sentCount . ' Subscriber(s).');
+        } elseif ($failCount > 0) {
+            $this->addFlashMessage($failCount . ' Subscriber(s) have failed to recieve the Message.', '', \Neos\Error\Messages\Message::SEVERITY_WARNING);
+        } else {
+            $this->addFlashMessage('There are no Subscribers yet...', '', \Neos\Error\Messages\Message::SEVERITY_WARNING);
+        }
+
         $this->redirect('index');
     }
 }

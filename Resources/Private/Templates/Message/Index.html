@@ -12,8 +12,8 @@
 
 <f:section name="vapid">
   <p>
-    Browsers need to verify your identity. A standard called VAPID can authenticate you for all browsers. <br />
-    You'll need to create and provide a public and private key for your server.<br />
+    Browsers need to verify your identity. A standard called VAPID can authenticate you for all
+    browsers. <br /> You'll need to create and provide a public and private key for your server.<br />
     These keys must be safely stored and should not change.
   </p>
   <br />
@@ -30,10 +30,10 @@
   <br />
   <br />
   <p>
-    After that, you just have to call the following JavaScript function to request permission from the user. <br />
+    After that, you just have to call the following JavaScript function to request permission from
+    the user. <br />
   </p>
   <pre>__webPushRequestPermission()</pre>
-  
 </f:section>
 
 <f:section name="messages">
@@ -57,8 +57,10 @@
           </thead>
           <f:for each="{messages}" key="index" as="message" iteration="messagesIterator">
             <tr>
-              <td>{message.title}</td>
-              <td>{message.body}</td>
+              <td>{message.title -> f:format.crop(maxCharacters: '20')}</td>
+              <td>
+                {message.body -> f:format.crop(maxCharacters: '60')}
+              </td>
               <td>
                 <f:if condition="{message.tag} != ''">
                   <span class="neos-label">
@@ -71,7 +73,7 @@
                   <f:link.action
                     action="send"
                     arguments="{message: message}"
-                    class="neos-button neos-button-primary"
+                    class="neos-button neos-button-success"
                     title="Send Message"
                     additionalAttributes="{data-neos-toggle: 'tooltip'}"
                   >
@@ -86,6 +88,16 @@
                     additionalAttributes="{data-neos-toggle: 'tooltip'}"
                   >
                     <i class="fas fa-info-circle icon-white"></i>
+                  </f:link.action>
+
+                  <f:link.action
+                    action="edit"
+                    arguments="{message: message}"
+                    class="neos-button neos-button-primary"
+                    title="Edit this Message"
+                    additionalAttributes="{data-neos-toggle: 'tooltip'}"
+                  >
+                    <i class="fas fa-pencil-alt icon-white"></i>
                   </f:link.action>
 
                   <button
