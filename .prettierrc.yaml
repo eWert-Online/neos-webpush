@@ -1,0 +1,11 @@
+trailingComma: 'es5'
+tabWidth: 2
+tabs: false
+semi: true
+bracketSpacing: true
+singleQuote: true
+printWidth: 120
+proseWrap: 'never'
+htmlWhitespaceSensitivity: 'strict'
+requirePragma: true
+insertPragma: true

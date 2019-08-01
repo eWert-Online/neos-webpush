@@ -1,48 +1,77 @@
+/**
+ * @prettier
+ */
+
 function __webPushRequestPermission() {
-  // Let's check if the browser supports notifications
-  if (!('Notification' in window) || !navigator.serviceWorker) {
-    console.warn('This browser does not support desktop notifications :(');
+  if (!('serviceWorker' in navigator)) {
     return;
   }
 
-  if (Notification.permission === 'granted') {
-    registerServiceWorker();
-  } else if (Notification.permission === 'blocked') {
-    console.warn('Permission was denied.');
+  if (!('PushManager' in window)) {
     return;
-  } else {
-    Notification.requestPermission(function(status) {
-      if (status === 'granted') {
-        registerServiceWorker();
-      }
+  }
+
+  new Promise((resolve, reject) => {
+    const permissionPromise = Notification.requestPermission(result => {
+      resolve(result);
+    });
+    if (permissionPromise) {
+      permissionPromise.then(resolve);
+    }
+  }).then(result => {
+    if (result === 'granted') {
+      registerServiceWorker().then(registration => {
+        subscribeUserToPush(registration).then(pushSubscription => {
+          sendSubscriptionToServer(pushSubscription);
+        });
+      });
+    }
+  });
+
+  function registerServiceWorker() {
+    return new Promise((resolve, reject) => {
+      navigator.serviceWorker
+        .register(window.EwertWebPush.swUrl)
+        .then(function(registration) {
+          console.log('Service worker successfully registered.');
+          return resolve(registration);
+        })
+        .catch(function(err) {
+          console.error('Unable to register service worker.', err);
+          reject(err);
+        });
     });
   }
 
-  function registerServiceWorker() {
-    // Register and get the notification details and send them to the server.
-    navigator.serviceWorker
-      .register(window.EwertWebPush.swUrl)
-      .then(function(registration) {
-        return registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(window.EwertWebPush.publicKey)
-        });
-      })
-      .then(function(subscription) {
-        var sub = subscription.toJSON();
-        fetch('/webpush/subscribtion/new', {
-          method: 'POST',
-          headers: new Headers({
-            'Content-Type': 'application/json'
-          }),
-          body: JSON.stringify({
-            endpoint: sub.endpoint,
-            expirationTime: sub.expirationTime,
-            p256dh: sub.keys.p256dh,
-            auth: sub.keys.auth
-          })
-        });
+  function subscribeUserToPush(registration) {
+    return new Promise(resolve => {
+      const subscribeOptions = {
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(window.EwertWebPush.publicKey),
+      };
+
+      registration.pushManager.subscribe(subscribeOptions).then(function(pushSubscription) {
+        console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
+        return resolve(pushSubscription);
       });
+    });
+  }
+
+  function sendSubscriptionToServer(subscription) {
+    console.log('Sending subscription to server...');
+    var sub = subscription.toJSON();
+    return fetch('/webpush/subscribtion/new', {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        endpoint: sub.endpoint,
+        expirationTime: sub.expirationTime,
+        p256dh: sub.keys.p256dh,
+        auth: sub.keys.auth,
+      }),
+    });
   }
 
   function urlBase64ToUint8Array(base64String) {

@@ -12,21 +12,23 @@
 
 <f:section name="vapid">
   <p>
-    Browsers need to verify your identity. A standard called VAPID can authenticate you for all
-    browsers. <br /> You'll need to create and provide a public and private key for your server.<br />
+    Browsers need to verify your identity. A standard called VAPID can authenticate you for all browsers. <br />
+    You'll need to create and provide a public and private key for your server. <br />
     These keys must be safely stored and should not change.
   </p>
   <br />
   <p>
-    You can use the following keys (they are randomly generated on each page load):
+    You can use the following configuration (the keys are randomly generated on each page load):
   </p>
   <br />
+  <code>
+    Ewert:<br />
+    &nbsp;&nbsp;WebPush:<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;vapid:<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publicKey: '{publicKey}'<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;privateKey: '{privateKey}'
+  </code>
   <br />
-  <b>Public:</b>
-  <pre>{publicKey}</pre>
-  <br />
-  <b>Private:</b>
-  <pre>{privateKey}</pre>
   <br />
   <br />
   <p>
