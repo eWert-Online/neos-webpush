@@ -1,4 +1,5 @@
 <?php
+
 namespace Ewert\WebPush\Controller;
 
 /*
@@ -46,11 +47,10 @@ class SubscriptionController extends ActionController
         $endpoint,
         $p256dh,
         $auth
-    )
-    {
+    ) {
         $existingSubscription = $this->subscriptionRepository->findByEndpoint($endpoint);
 
-        if(count($existingSubscription) > 0) {
+        if (count($existingSubscription) > 0) {
             $this->view->assignMultiple(array(
                 'created' => false,
                 'timestamp' => time(),

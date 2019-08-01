@@ -1,0 +1,38 @@
+<div class="neos-hide" id="{id}">
+  <div class="neos-modal-centered">
+    <div class="neos-modal-content">
+      <div class="neos-modal-header">
+        <button
+          type="button"
+          class="neos-close neos-button"
+          data-dismiss="modal"
+        ></button>
+        <div class="neos-header">
+          Delete Message
+        </div>
+        <div>
+          <div class="neos-subheader">
+            <p>Are you sure you want to delete the message "{message.title}"</p>
+          </div>
+        </div>
+      </div>
+      <div class="neos-modal-footer">
+        <a href="#" class="neos-button" data-dismiss="modal">Cancel</a>
+        <f:form
+          action="delete"
+          arguments="{message: message}"
+          class="neos-inline"
+        >
+          <button
+            type="submit"
+            class="neos-button neos-button-danger"
+            title="Delete Message"
+          >
+            Yes, delete Message
+          </button>
+        </f:form>
+      </div>
+    </div>
+  </div>
+  <div class="neos-modal-backdrop neos-in"></div>
+</div>

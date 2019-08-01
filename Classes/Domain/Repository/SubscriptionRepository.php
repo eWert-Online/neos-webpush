@@ -1,4 +1,5 @@
 <?php
+
 namespace Ewert\WebPush\Domain\Repository;
 
 /*

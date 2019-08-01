@@ -240,6 +240,8 @@ class MessageController extends ActionController
 
         if ($sentCount > 0) {
             $this->addFlashMessage('The Message has been sent successfully to ' . $sentCount . ' Subscriber(s).');
+            $message->setTimestamp(time());
+            $this->messageRepository->update($message);
         } elseif ($failCount > 0) {
             $this->addFlashMessage($failCount . ' Subscriber(s) have failed to recieve the Message.', '', \Neos\Error\Messages\Message::SEVERITY_WARNING);
         } else {

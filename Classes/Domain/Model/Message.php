@@ -72,7 +72,7 @@ class Message
 
     /**
      * @var integer
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=TRUE)
      */
     protected $timestamp;
 

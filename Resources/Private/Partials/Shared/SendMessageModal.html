@@ -1,0 +1,24 @@
+<div class="neos-hide" id="{id}">
+  <div class="neos-modal-centered">
+    <div class="neos-modal-content">
+      <div class="neos-modal-header">
+        <button type="button" class="neos-close neos-button" data-dismiss="modal"></button>
+        <div class="neos-header">
+          Send Message
+        </div>
+        <div class="neos-subheader">
+          Are you sure you want to send the message "{message.title}"
+        </div>
+      </div>
+      <div class="neos-modal-footer">
+        <a href="#" class="neos-button" data-dismiss="modal">Cancel</a>
+        <f:form action="send" arguments="{message: message}" class="neos-inline">
+          <button type="submit" class="neos-button neos-button-success" title="Send Message">
+            Yes, send Message
+          </button>
+        </f:form>
+      </div>
+    </div>
+  </div>
+  <div class="neos-modal-backdrop neos-in"></div>
+</div>

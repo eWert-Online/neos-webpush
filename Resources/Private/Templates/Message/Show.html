@@ -18,9 +18,16 @@
           <tr>
             <th>Date sent</th>
             <td>
-              <f:format.date>
-                @{message.timestamp}
-              </f:format.date>
+              <f:if condition="{message.timestamp}">
+                <f:then>
+                  <f:format.date format="d.m.Y H:i">
+                    @{message.timestamp}
+                  </f:format.date>
+                </f:then>
+                <f:else>
+                  -
+                </f:else>
+              </f:if>
             </td>
           </tr>
         </tbody>
@@ -66,31 +73,11 @@
     <button class="neos-button neos-button-danger" data-toggle="modal" href="#message-delete">
       <i class="fas fa-trash-alt icon-white"></i> Delete Message
     </button>
-    <div class="neos-hide" id="message-delete">
-      <div class="neos-modal-centered">
-        <div class="neos-modal-content">
-          <div class="neos-modal-header">
-            <button type="button" class="neos-close neos-button" data-dismiss="modal"></button>
-            <div class="neos-header"
-              >Are you sure you want to delete the message "{message.title}"</div
-            >
-            <div>
-              <div class="neos-subheader">
-                <p>Bla</p>
-              </div>
-            </div>
-          </div>
-          <div class="neos-modal-footer">
-            <a href="#" class="neos-button" data-dismiss="modal">Cancel</a>
-            <f:form action="delete" arguments="{message: message}" class="neos-inline">
-              <button type="submit" class="neos-button neos-button-danger" title="Delete Message">
-                Yes, delete Message
-              </button>
-            </f:form>
-          </div>
-        </div>
-      </div>
-      <div class="neos-modal-backdrop neos-in"></div>
-    </div>
+
+    <button class="neos-button neos-button-success" data-toggle="modal" href="#message-send">
+      <i class="fas fa-share icon-white"></i> Send Message
+    </button>
   </div>
+  <f:render partial="Shared/DeleteMessageModal" arguments="{id: 'message-delete', message: '{message}'}" />
+  <f:render partial="Shared/SendMessageModal" arguments="{id: 'message-send', message: '{message}'}" />
 </f:if>

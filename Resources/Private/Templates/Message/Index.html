@@ -46,41 +46,48 @@
           <thead>
             <tr>
               <th>
+                Date sent
+              </th>
+              <th>
                 Title
               </th>
               <th>
                 Message
-              </th>
-              <th>
-                Tag
               </th>
               <th>&nbsp;</th>
             </tr>
           </thead>
           <f:for each="{messages}" key="index" as="message" iteration="messagesIterator">
             <tr>
-              <td>{message.title -> f:format.crop(maxCharacters: '20')}</td>
+              <td>
+                <f:if condition="{message.timestamp}">
+                  <f:then>
+                    <f:format.date format="d.m.Y H:i">
+                      @{message.timestamp}
+                    </f:format.date>
+                  </f:then>
+                  <f:else>
+                    -
+                  </f:else>
+                </f:if>
+              </td>
+              <td>
+                {message.title -> f:format.crop(maxCharacters: '20')}
+              </td>
               <td>
                 {message.body -> f:format.crop(maxCharacters: '60')}
               </td>
-              <td>
-                <f:if condition="{message.tag} != ''">
-                  <span class="neos-label">
-                    {message.tag}
-                  </span>
-                </f:if>
-              </td>
               <td class="neos-action">
                 <div class="neos-pull-right">
-                  <f:link.action
-                    action="send"
-                    arguments="{message: message}"
+                  <button
                     class="neos-button neos-button-success"
                     title="Send Message"
-                    additionalAttributes="{data-neos-toggle: 'tooltip'}"
+                    data-toggle="modal"
+                    href="#message-send-{messagesIterator.index}"
+                    data-neos-toggle="tooltip"
                   >
                     <i class="fas fa-share icon-white"></i>
-                  </f:link.action>
+                  </button>
 
                   <f:link.action
                     action="show"
@@ -106,52 +113,16 @@
                     class="neos-button neos-button-danger"
                     title="Delete Message"
                     data-toggle="modal"
-                    href="#message-{messagesIterator.index}"
+                    href="#message-delete-{messagesIterator.index}"
                     data-neos-toggle="tooltip"
                   >
                     <i class="fas fa-trash-alt icon-white"></i>
                   </button>
-                  <div class="neos-hide" id="message-{messagesIterator.index}">
-                    <div class="neos-modal-centered">
-                      <div class="neos-modal-content">
-                        <div class="neos-modal-header">
-                          <button
-                            type="button"
-                            class="neos-close neos-button"
-                            data-dismiss="modal"
-                          ></button>
-                          <div class="neos-header">
-                            Are you sure you want to delete the message "{message.title}"
-                          </div>
-                          <div>
-                            <div class="neos-subheader">
-                              <p>Bla</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="neos-modal-footer">
-                          <a href="#" class="neos-button" data-dismiss="modal">Cancel</a>
-                          <f:form
-                            action="delete"
-                            arguments="{message: message}"
-                            class="neos-inline"
-                          >
-                            <button
-                              type="submit"
-                              class="neos-button neos-button-danger"
-                              title="Delete Message"
-                            >
-                              Yes, delete Message
-                            </button>
-                          </f:form>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="neos-modal-backdrop neos-in"></div>
-                  </div>
                 </div>
               </td>
             </tr>
+            <f:render partial="Shared/SendMessageModal" arguments="{id: 'message-send-{messagesIterator.index}', message: '{message}'}" />
+            <f:render partial="Shared/DeleteMessageModal" arguments="{id: 'message-delete-{messagesIterator.index}', message: '{message}'}" />
           </f:for>
         </table>
       </f:then>
