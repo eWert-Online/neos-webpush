@@ -19,5 +19,5 @@ Neos:
 Ewert:
   WebPush:
     vapid:
-      publicKey: 'BEVvo1UcO4UA_L_tt_Wa9KMLrNKB2DMF1q3j4B8XCSsBHXcdDJlLTnUD0fMDYNETLHEbyY1zgYfZ_1OG7vG1roA'
-      privateKey: 'iy6cwuzCOIW3aodvOnGkFXBojwV79QvHfeL40fdo5qg'
+      publicKey: ''
+      privateKey: ''

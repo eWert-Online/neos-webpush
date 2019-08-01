@@ -1,24 +1,22 @@
-(function() {
-  document.addEventListener('DOMContentLoaded', function() {
-    // Let's check if the browser supports notifications
-    if (!('Notification' in window) || !navigator.serviceWorker) {
-      console.warn('This browser does not support desktop notifications :(');
-      return;
-    }
+function __webPushRequestPermission() {
+  // Let's check if the browser supports notifications
+  if (!('Notification' in window) || !navigator.serviceWorker) {
+    console.warn('This browser does not support desktop notifications :(');
+    return;
+  }
 
-    if (Notification.permission === 'granted') {
-      registerServiceWorker();
-    } else if (Notification.permission === 'blocked') {
-      console.warn('Permission was denied.');
-      return;
-    } else {
-      Notification.requestPermission(function(status) {
-        if (status === 'granted') {
-          registerServiceWorker();
-        }
-      });
-    }
-  });
+  if (Notification.permission === 'granted') {
+    registerServiceWorker();
+  } else if (Notification.permission === 'blocked') {
+    console.warn('Permission was denied.');
+    return;
+  } else {
+    Notification.requestPermission(function(status) {
+      if (status === 'granted') {
+        registerServiceWorker();
+      }
+    });
+  }
 
   function registerServiceWorker() {
     // Register and get the notification details and send them to the server.
@@ -59,4 +57,4 @@
     }
     return outputArray;
   }
-})();
+}
