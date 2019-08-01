@@ -27,9 +27,7 @@
       .then(function(registration) {
         return registration.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(
-            'BMBlr6YznhYMX3NgcWIDRxZXs0sh7tCv7_YCsWcww0ZCv9WGg-tRCXfMEHTiBPCksSqeve1twlbmVAZFv7GSuj0'
-          )
+          applicationServerKey: urlBase64ToUint8Array(window.EwertWebPush.publicKey)
         });
       })
       .then(function(subscription) {

@@ -1,16 +1,5 @@
 {namespace neos=Neos\Neos\ViewHelpers}
-<f:flashMessages as="flashMessages">
-  <f:if condition="{flashMessages -> f:count()} > 0">
-    <ul id="neos-notifications-inline">
-      <f:for each="{flashMessages}" as="flashMessage">
-        <li data-type="{flashMessage.severity -> f:format.case(mode: 'lower')}">
-          {neos:backend.translate(id: 'flashMessage.{flashMessage.code}',
-          arguments:flashMessage.arguments, value: flashMessage)}
-        </li>
-      </f:for>
-    </ul>
-  </f:if>
-</f:flashMessages>
+<f:render partial="Shared/FlashMessages" />
 
 <f:if condition="{generateVapid}">
   <f:then>
@@ -23,12 +12,13 @@
 
 <f:section name="vapid">
   <p>
-    Browsers need to verify your identity. A standard called VAPID can authenticate you for all
-    browsers. You'll need to create and provide a public and private key for your server. These keys
-    must be safely stored and should not change.
+    Browsers need to verify your identity. A standard called VAPID can authenticate you for all browsers. <br />
+    You'll need to create and provide a public and private key for your server.<br />
+    These keys must be safely stored and should not change.
   </p>
+  <br />
   <p>
-    You can use the following keys:
+    You can use the following keys (they are randomly generated on each page load):
   </p>
   <br />
   <br />

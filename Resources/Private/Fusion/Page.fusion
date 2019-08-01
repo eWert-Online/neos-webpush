@@ -1,29 +1,30 @@
 prototype(Neos.Neos:Page) {
   webPushScript = Neos.Fusion:Tag {
-		@position = 'before closingBodyTag'
+    @position = 'before closingBodyTag'
 
-		tagName = 'script'
-		attributes {
-			src = Neos.Fusion:ResourceUri {
-				path = 'resource://Ewert.WebPush/Public/JavaScript/Main.js'
-			}
-		}
-	}
+    tagName = 'script'
+    attributes {
+      src = Neos.Fusion:ResourceUri {
+        path = 'resource://Ewert.WebPush/Public/JavaScript/Main.js'
+      }
+    }
+  }
 
-	webPushServiceWorker = Neos.Fusion:Tag {
-		@context.swUrl = Neos.Fusion:ResourceUri {
-			path = 'resource://Ewert.WebPush/Public/JavaScript/service-worker.js'
-		}
-		@position="before closingBodyTag"
-		
-		tagName = 'script'
+  webPushServiceWorker = Neos.Fusion:Tag {
+    @context.swUrl = Neos.Fusion:ResourceUri {
+      path = 'resource://Ewert.WebPush/Public/JavaScript/service-worker.js'
+    }
+    @context.publicKey = ${Configuration.setting('Ewert.WebPush.vapid.publicKey')}
+    @position="before closingBodyTag"
+    tagName = 'script'
     content = ${"
-			(function() {
+      (function() {
         \"EwertWebPush\" in window || (window.EwertWebPush = function() {
         window.EwertWebPush.q.push(arguments)
         }, window.EwertWebPush.q = []),
         window.EwertWebPush.swUrl = \""+ swUrl +"\";
-    	})();
-		"}
-	}
+        window.EwertWebPush.publicKey = \""+ publicKey +"\";
+      })();
+    "}
+  }
 }

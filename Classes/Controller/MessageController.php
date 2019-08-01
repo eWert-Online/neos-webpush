@@ -167,9 +167,9 @@ class MessageController extends ActionController
         foreach($allSubscriptions as $subscription) {
             $auth = array(
                 'VAPID' => array(
-                    'subject' => 'https://github.com/Minishlink/web-push-php-example/',
-                    'publicKey' => 'BMBlr6YznhYMX3NgcWIDRxZXs0sh7tCv7_YCsWcww0ZCv9WGg-tRCXfMEHTiBPCksSqeve1twlbmVAZFv7GSuj0',
-                    'privateKey' => 'vplfkITvu0cwHqzK9Kj-DYStbCH_9AhGx9LqMyaeI6w',
+                    'subject' => '',
+                    'publicKey' => $this->vapidPublicKey,
+                    'privateKey' => $this->vapidPrivateKey,
                 ),
             );
 
