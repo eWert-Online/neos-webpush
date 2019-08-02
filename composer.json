@@ -2,6 +2,7 @@
   "description": "",
   "type": "neos-package",
   "name": "ewert/neos-webpush",
+  "license": "MIT",
   "require": {
     "neos/flow": "*",
     "minishlink/web-push": "^5.2"
