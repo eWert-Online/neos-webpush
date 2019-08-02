@@ -1,7 +1,7 @@
 {
   "name": "ewert/neos-webpush",
   "type": "neos-package",
-  "description": "This package provides a backend module to manage and send Web Push Notifications redirects",
+  "description": "This package provides a backend module to manage and send Web Push Notifications",
   "license": "MIT",
   "require": {
     "neos/flow": "*",
