@@ -13,7 +13,7 @@ Neos:
           'webPush':
             label: 'Push Messages'
             controller: 'Ewert\WebPush\Controller\MessageController'
-            description: 'Send Push-Messages'
+            description: 'This module contains an overview of all push messages and allows to add new messages and send, edit or delete existing ones.'
             icon: 'icon-comment-dots'
 
 Ewert:
