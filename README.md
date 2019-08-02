@@ -29,6 +29,15 @@ Ewert:
       privateKey: ''
 ```
 
+## Asking the users for Permission
+To be able to send some messages to your users, you have to first ask them for permission. <br />
+To do that, you just have to call the following JavaScript function: <br />
+
+```javascript
+window.EwertWebPush.requestPermission();
+```
+
+
 ## Screenshots
 Overview:
 ![Push Module Screenshot](Documentation/Images/Overview.png?raw=true "Push Module Screenshot")
