@@ -3,7 +3,7 @@ privilegeTargets:
     'Ewert.WebPush:SubscriptionControllerCreate':
       matcher: 'method(Ewert\WebPush\Controller\SubscriptionController->createAction())'
     'Ewert.WebPush:MessageControllerActions':
-      matcher: 'method(Ewert\WebPush\Controller\MessageController->(index)Action())'
+      matcher: 'method(Ewert\WebPush\Controller\MessageController->(.*)Action())'
 
   Neos\Neos\Security\Authorization\Privilege\ModulePrivilege:
     'Ewert.WebPush:BackendModule':
@@ -14,7 +14,14 @@ roles:
     privileges:
       - privilegeTarget: 'Ewert.WebPush:SubscriptionControllerCreate'
         permission: GRANT
-  'Neos.Neos:Editor':
+  'Neos.Neos:Administrator':
+    privileges:
+      - privilegeTarget: 'Ewert.WebPush:MessageControllerActions'
+        permission: GRANT
+      - privilegeTarget: 'Ewert.WebPush:BackendModule'
+        permission: GRANT
+
+  'Ewert.WebPush:WebPushAdministrator':
     privileges:
       - privilegeTarget: 'Ewert.WebPush:MessageControllerActions'
         permission: GRANT
