@@ -7,6 +7,7 @@ namespace Ewert\WebPush\Controller;
  */
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Http\Request;
 use Neos\Flow\Mvc\Controller\ActionController;
 
 use Ewert\WebPush\Domain\Model\Message;
@@ -190,11 +191,13 @@ class MessageController extends ActionController
         $allSubscriptions = $this->subscriptionRepository->findAll();
         $sentCount = 0;
         $failCount = 0;
+        $request = Request::createFromEnvironment();
+        $currentUri = $request->getUri();
 
         foreach ($allSubscriptions as $subscription) {
             $auth = array(
                 'VAPID' => array(
-                    'subject' => '',
+                    'subject' => $currentUri->getScheme() . "://" . $currentUri->getHost() . "/",
                     'publicKey' => $this->vapidPublicKey,
                     'privateKey' => $this->vapidPrivateKey,
                 ),
