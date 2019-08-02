@@ -10,7 +10,9 @@ This package provides a backend module to manage and send Web Push Notifications
 
 2. Then run `composer update` in your projects root folder.
 
-3. Then you can add the `WebPushAdministrator` role to the users who need access to the new backend module.
+3. Run the following command to migrate your database `./flow doctrine:migrate`
+
+4. Finally you can add the `WebPushAdministrator` role to the users who need access to the new backend module.
 
 ## Configuration
 Browsers need to verify your identity. A standard called VAPID can authenticate you for all browsers. <br />
