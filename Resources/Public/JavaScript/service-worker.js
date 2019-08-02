@@ -2,6 +2,10 @@
  * @prettier
  */
 
+self.addEventListener('install', function(event) {
+  self.skipWaiting();
+});
+
 self.addEventListener('push', function(event) {
   var payload = event.data.json();
   event.waitUntil(
